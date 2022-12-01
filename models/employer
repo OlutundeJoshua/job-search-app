@@ -1,0 +1,51 @@
+const mongoose = require('mongoose')
+const validator = require('validator')
+
+const employerSchema = new mongoose.Schema({
+    fullName: {
+        type: String,
+        required: [true, 'Please enter your first name']
+    },
+    companyName: {
+        type: String,
+        required: [true, "Please enter the company's name"],
+        unique: true,
+    },
+    email: {
+        type: String,
+        required: [true, 'Please enter an email address'],
+        lowercase: true,
+        validate: [validator.isEmail, 'Please enter a valid Email Address']
+    },
+    phoneNumber: String,
+    password: {
+        type: String,
+        required: [true, 'Please enter a password'],
+        minLength: [8, 'Password must be at least 8 characters'],
+        select: false,
+    },
+    passwordConfirm: {
+        type: String,
+        required: [true, 'Field is required!'],
+        validate: {
+            validator: function (val) {
+              return val === this.password;
+            },
+            message: "Password and confirm password are different",
+          },
+          select: false,
+    },
+    role: {
+        type: String,
+        default: 'employer',
+        enum: ['employee', 'employer', 'admin']
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now(),
+    }
+})
+
+const Employer = mongoose.model('Employer', employerSchema)
+
+module.exports = Employer
