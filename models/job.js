@@ -29,6 +29,13 @@ const jobSchema = new mongoose.Schema({
         required: [true, 'Please enter the job type'],
         enum: ['Full Time', 'Part Time'],
     },
+    keyword: {
+        type: String,
+        required: [true, 'Please enter keyword'],
+        enum: ['frontend developer', 'backend developer',  'data analyst', 
+        'UI/UX designer', 'product manager', 'product designer', 'full stack developer', 
+        'fulltime', 'remote'],
+    },
     createdAt: {
         type: Date,
         default: Date.now(),

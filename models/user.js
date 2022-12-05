@@ -30,25 +30,23 @@ const userSchema = new mongoose.Schema({
     passwordConfirm: {
         type: String,
         required: [true, 'Field is required!'],
-        validate: {
-            validator: function (val) {
-              return val === this.password;
-            },
-            message: "Password and confirm password are different",
-          },
+        minLength: [8, 'Password must be at least 8 characters'],
           select: false,
     },
     phoneNumber: {
         type: String,
+        required: [true, 'Please input your phone number']
     },
     skill: {
         type: String,
-        enum: ['frontend developer', 'backend developer',  'data analyst', 'UI/UX designer', 'product manager', 'product designer', 'full stack developer']
+        enum: ['frontend developer', 'backend developer',  'data analyst', 'UI/UX designer', 'product manager', 'product designer', 'full stack developer'],
+        required: [true, 'Please input your skill']
     },
     experience: {
         type: String,
+        emum : ["No experience", "1 year", "2 years", "3 years", "4 and above years"],
     },
-    address : {
+    location : {
         type : String,
     },
     role : {

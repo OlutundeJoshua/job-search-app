@@ -1,5 +1,7 @@
+const CatchAsync = require("../utils/catch-async");
 const QueryMethod = require("../utils/query");
 
+//Get One
 exports.getOne = (Model) =>
   CatchAsync(async (req, res, next) => {
     const user = await Model.findById(req.params.id);
@@ -15,6 +17,8 @@ exports.getOne = (Model) =>
     });
   });
 
+  
+//Get All
 exports.getAll = (Model) =>
   CatchAsync(async (req, res) => {
     let filter = req.params.tourId ? { tourRef: req.params.tourId } : {};
@@ -33,6 +37,7 @@ exports.getAll = (Model) =>
     });
   });
 
+//Delete One
   exports.deleteOne = (Model) =>
   CatchAsync(async (req, res, next) => {
     const user = await Model.findByIdAndDelete(req.params.id, {
