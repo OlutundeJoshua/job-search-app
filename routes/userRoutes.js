@@ -8,7 +8,7 @@ router.post('/signin', userSignIn)
 router.get('/', getUsers)
 router.route('/:id')
     .get(getUser)
-    .delete(deleteUserrs)
+    .delete(deleteUser)
 
 
 module.exports = router;
