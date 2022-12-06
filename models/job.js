@@ -1,10 +1,14 @@
 const mongoose = require('mongoose')
 
 const jobSchema = new mongoose.Schema({
-    companyName: String,
-    title: {
+    employerId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: [true, 'A job must have an employer']
+    },
+    companyName: {
         type: String,
-        required: [true, 'Please enter a job title']
+        required: [true, 'Please enter a company name']
     },
     category: {
         type: String,
@@ -20,27 +24,72 @@ const jobSchema = new mongoose.Schema({
     address: {
         type: String,
     },
-    description: {
+    jobTitle: {
+        type: String,
+        required: [true, 'Please enter the job title'],
+    },
+    jobDescription: {
         type: String,
         required: [true, 'Please enter the job description'],
     },
     jobType: {
         type: String,
         required: [true, 'Please enter the job type'],
-        enum: ['Full Time', 'Part Time'],
+        enum: ['Full Time', 'Part Time', 'Contract'],
     },
+    workType: {
+        type: String,
+        required: [true, 'Please enter the work type'],
+        enum: ['Full Time', 'Part Time', 'Contract'],
+    },
+    salary: {
+        type: String,
+    },
+    isAvailable: {
+        type: Boolean,
+        required: [true, "Please enter job availability"],
+        default: true,
+    },
+    yearsOfExperience: {
+        type: String,
+        required: [true, "please enter year of experience needed"],
+        enum: [
+          "No experience",
+          "0 to 1 year",
+          "1 year",
+          "2 years",
+          "3 years",
+          "4 years",
+          "5 years and above",
+        ],
+      },
     keyword: {
         type: String,
         required: [true, 'Please enter keyword'],
-        enum: ['frontend developer', 'backend developer',  'data analyst', 
-        'UI/UX designer', 'product manager', 'product designer', 'full stack developer', 
-        'fulltime', 'remote'],
+        enum: [
+            'frontend', 
+            'backend',
+            'data analyst',
+            'UI/UX designer',
+            'NestJs',
+            'NodeJs',
+            'Javascript',
+            'Python',
+            'product manager',
+            'product designer',
+            'full stack',
+            {location},
+    ],
     },
     createdAt: {
         type: Date,
         default: Date.now(),
     },
-})
+}, {
+    timestamps: true,
+    toObject: {virtuals: true}, toJSON: {virtuals: true},
+  }
+)
 
 const Job = mongoose.model('Job', jobSchema)
 
