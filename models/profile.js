@@ -16,8 +16,9 @@ const profileSchema = new mongoose.Schema({
         enum: ['frontend developer', 'backend developer',  'data analyst', 'UI/UX designer', 'product manager', 'product designer', 'full stack developer'],
         required: [true, 'Please enter your skill']
     },
-    experience: {
+    yearsOfExperience: {
         type: String,
+        required: [true, 'Please enter your years of experience'],
         emum : ["No experience", "1 year", "2 years", "3 years", "4 and above years"],
     },
     location : {
