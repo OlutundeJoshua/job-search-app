@@ -1,10 +1,12 @@
 const mongoose = require('mongoose')
 const validator = require('validator')
+const bcrypt = require('bcryptjs')
+const crypto = require('crypto')
 
 const userSchema = new mongoose.Schema({
     fullName: {
         type: String,
-        required: [true, 'Please enter your first name']
+        required: [true, 'Please enter your full name']
     },
     email: {
         type: String,
@@ -58,10 +60,10 @@ const userSchema = new mongoose.Schema({
     role : {
         type : String,
         default : "employee",
-        enum : ["employee", "employer", "admin"]
+        enum : ["user", "employer", "admin"]
     },
     profile:{
-        type:mongoose.Schema.Types.ObjectId,
+        type: mongoose.Schema.ObjectId,
         ref:"Profile",
       },
     createdAt : {

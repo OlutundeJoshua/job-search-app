@@ -6,7 +6,7 @@ const { createProfile, getProfile, updateprofile, deleteProfile, getProfiles } =
 const router = express.Router()
 
 router.post('/createProfile', protect, restrictTo('user'), createProfile)
-router.get('/', restrictTo('admin'), getProfiles)
+router.get('/', protect, restrictTo('admin'), getProfiles)
 router.route('/:id')
     .get(protect, getProfile)
     .patch(protect, updateprofile)

@@ -7,7 +7,7 @@ const ErrorObject = require('../utils/error')
 const sendEmail = require('../utils/email')
 
 //Token Generation
-const { JWT_COOKIE_EXPIRES_IN, JWT_EXPIRES_IN, JWT_SECRET } = process.env
+const { JWT_COOKIE_EXPIRES_IN, JWT_EXPIRES_IN, JWT_SECRET, NODE_ENV } = process.env
 
 const signToken = (id) => {
   return jwt.sign({id}, JWT_SECRET, {
@@ -35,7 +35,7 @@ const createAndSendToken = CatchAsync(async (user, statusCode, res) => {
 })
 
 
-//Sign Up
+// Sign Up
 exports.signUp = (Model) => async (req, res, next) => {
     try{
             const{
@@ -64,9 +64,9 @@ exports.signUp = (Model) => async (req, res, next) => {
         }catch(err) {
         res.status(404).json({
             status: 'fail',
-            message: err.message
+            message: err
         })
-    }
+      }
 }
 
 
@@ -83,24 +83,26 @@ exports.signIn = (Model) => async (req, res) => {
         }
 
         const user = await Model.findOne({email}).select('+password')
+        if(!user) {
+          return res.status(401).json({
+              status: "fail",
+              message: "Invalid email or password",
+          });
+      }
         const confirmPassword = await bcrypt.compare(password, user.password)
-        if(!user || !confirmPassword) {
+        if(!confirmPassword) {
             return res.status(401).json({
                 status: "fail",
                 message: "Invalid email or password",
             });
         }
 
-        res.status(200).json({
-            status: 'success',
-            data: user,
-        })
-        
+        createAndSendToken(user, 201, res)
         }
     catch(err) {
             res.status(400).json({
                 status: 'fail',
-                message: err
+                message: err.message
             })
         }
 }
@@ -191,7 +193,7 @@ exports.updatePassword = CatchAsync(async (req, res, next) => {
 //Authentication
 exports.protect = CatchAsync(async (req, res, next) => {
   let token
-  if (req.heaaders.authorization &&req.headers.authorization.startWith("bearer")) {
+  if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
     token = req.headers.authorization.split(" ")[1]
   }
   if (!token) {
@@ -199,8 +201,8 @@ exports.protect = CatchAsync(async (req, res, next) => {
       new ErrorObject("You are not logged in.Kindly Login or SignUp", 401)
     )
   }
-  const decodedToken = await jwt.verify(token, JWT_SECRET)
-  const currentUser = await User.findbyId(decodedToken.id)
+  const decodedToken = await jwt.verify(token, JWT_SECRET, {expiresIn : JWT_EXPIRES_IN})
+  const currentUser = await User.findById(decodedToken.id)
   req.user = currentUser;
   next()
 })

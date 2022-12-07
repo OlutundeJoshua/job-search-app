@@ -21,21 +21,21 @@ exports.getOne = (Model) =>
 //Get All
 exports.getAll = (Model) =>
   CatchAsync(async (req, res) => {
-    let filter = req.params.tourId ? { tourRef: req.params.tourId } : {};
+    let filter = req.params.tourId ? { tourRef: req.params.tourId } : {}
     const features = new QueryMethod(Model.find(filter), req.query)
       .sort()
       .limit()
       .paginate()
-      .filter();
+      .filter()
 
-    const users = await features.query;
+    const users = await features.query
     res.status(200).json({
       status: "success",
       results: users.length,
 
       data: users,
-    });
-  });
+    })
+  })
 
 //Delete One
   exports.deleteOne = (Model) =>

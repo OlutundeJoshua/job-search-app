@@ -1,17 +1,19 @@
 const mongoose = required('mongoose')
 
 const userJobSchema = new mongoose.Schema({
-    user_id: {
-        type: String,
+    userId: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'User',
         required: [true, 'User Id is required'],
     },
-    job_id: {
-        type: String,
+    jobId: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'Job',
         required: [true, 'Job Id is required'],
     },
     status: {
         type: String,
-        enum: ['applied', 'shortlisted', 'rejected']
+        enum: ['applied', 'shortlisted', 'accepted','rejected']
     },
     createdAt: {
         type: Date,
@@ -19,6 +21,6 @@ const userJobSchema = new mongoose.Schema({
     },
 })
 
-const UserJob = mongoose.model('UserJob', userJobSchema);
+const JobApplication = mongoose.model('UserJob', userJobSchema);
 
-module.exports = UserJob;
+module.exports = JobApplication;

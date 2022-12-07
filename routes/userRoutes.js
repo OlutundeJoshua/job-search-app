@@ -1,7 +1,5 @@
 const express = require('express');
 const {
-    signUp,
-    signIn,
     protect,
     restrictTo,
     forgotPassword,
@@ -13,13 +11,15 @@ const {
     getUsers,
     getUser,
     deleteUser,
-    updateUser
+    updateUser,
+    signUpUser,
+    signInUser
 } = require('../controllers/user')
 
 const router = express.Router();
 
-router.post('/signup', signUp)
-router.post('/signin', signIn)
+router.post('/signup', signUpUser)
+router.post('/signin', signInUser)
 router.post('/forgot-password', forgotPassword)
 router.patch('/reset-password/:token', resetPassword)
 router.patch('/update-password/:id', protect, updatePassword)

@@ -5,6 +5,7 @@ const morgan = require("morgan");
 const ErrorObject = require('./utils/error');
 const profileRoutes = require('./routes/profileRoutes');
 const userRoutes = require('./routes/userRoutes')
+const jobRoutes = require('./routes/jobRoutes')
 
 const app = express();
 
@@ -20,6 +21,7 @@ let accessLogStream = fs.createWriteStream(path.join(__dirname, "access.log"), {
 //Routes
 app.use('/api/v1/users', userRoutes)
 app.use('/api/v1/profiles', profileRoutes)
+app.use('/api/v1/jobs', jobRoutes)
 app.all("*", (req, res, next) => {
     const err = new ErrorObject(
       `http://localhost:${PORT}${req.url} not found`,

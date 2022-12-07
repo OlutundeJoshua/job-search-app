@@ -78,7 +78,6 @@ const jobSchema = new mongoose.Schema({
             'product manager',
             'product designer',
             'full stack',
-            {location},
     ],
     },
     createdAt: {

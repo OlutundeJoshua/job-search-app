@@ -1,8 +1,12 @@
 const User = require("../models/user");
 const CatchAsync = require("../utils/catch-async");
 const ErrorObject = require("../utils/error");
+const { signUp, signIn } = require("./auth");
 const { getAll, getOne, deleteOne } = require("./generic");
 
+
+exports.signUpUser = signUp(User)
+exports.signInUser = signIn(User)
 //Get All Users
 exports.getUsers = getAll(User)
 
