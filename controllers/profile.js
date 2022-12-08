@@ -1,3 +1,4 @@
+const { findById } = require('../models/job')
 const Profile = require('../models/profile')
 const User = require('../models/user')
 const CatchAsync = require('../utils/catch-async')
@@ -16,6 +17,7 @@ exports.deleteProfile = deleteOne(Profile)
 //Creating a Profile
 exports.createProfile = CatchAsync(async (req, res, next) => {
     const userId = req.user.id
+    const user = await User.findById(userId)
     const {
         cv,
         skills,
@@ -31,6 +33,8 @@ exports.createProfile = CatchAsync(async (req, res, next) => {
         yearsOfExperience,
         linkedInUrl,
     })
+    user.profile = profile.id
+    await user.save()
     res.status(200).json({
         status: 'success',
         message: 'Profile created succesfully',

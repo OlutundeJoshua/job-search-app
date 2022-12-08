@@ -4,7 +4,7 @@ const QueryMethod = require("../utils/query");
 //Get One
 exports.getOne = (Model) =>
   CatchAsync(async (req, res, next) => {
-    const user = await Model.findById(req.params.id);
+    const user = await Model.findById(req.params.id)
 
     if (!user)
       return next(

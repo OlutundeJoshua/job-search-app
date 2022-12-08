@@ -73,6 +73,17 @@ const userSchema = new mongoose.Schema({
 },  { toObject: { virtuals: true }, toJSON: { virtuals: true } }
 )
 
+// userSchema.pre(/^findOne/, function(next){
+//   this.populate({
+//       path: 'profile',
+//       select: 'name'
+//   }).populate({
+//       path: 'author',
+//       select: 'name photo'
+//   })
+//   next()
+// })
+
 userSchema.pre("save", async function (next) {
     if (!this.isModified("password")) {
       return next();

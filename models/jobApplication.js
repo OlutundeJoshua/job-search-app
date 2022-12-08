@@ -1,4 +1,4 @@
-const mongoose = required('mongoose')
+const mongoose = require('mongoose')
 
 const userJobSchema = new mongoose.Schema({
     userId: {

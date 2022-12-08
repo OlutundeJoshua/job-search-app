@@ -11,7 +11,22 @@ exports.signInUser = signIn(User)
 exports.getUsers = getAll(User)
 
 //Get One User
-exports.getUser = getOne(User)
+// exports.getUser = getOne(User)
+
+//Get One
+exports.getUser = CatchAsync(async (req, res, next) => {
+    const user = await User.findById(req.params.id).populate('profile');
+  console.log(user.profile)
+    if (!user)
+      return next(
+        new ErrorObject(`User with the id ${req.params.id} not found`, 404)
+      );
+
+    res.status(200).json({
+      status: "success",
+      data: user,
+    });
+  });
 
 //Delete User
 exports.deleteUser = deleteOne(User)
