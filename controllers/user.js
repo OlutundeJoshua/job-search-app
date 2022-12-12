@@ -16,7 +16,6 @@ exports.getUsers = getAll(User)
 //Get One
 exports.getUser = CatchAsync(async (req, res, next) => {
     const user = await User.findById(req.params.id).populate('profile');
-  console.log(user.profile)
     if (!user)
       return next(
         new ErrorObject(`User with the id ${req.params.id} not found`, 404)

@@ -1,4 +1,5 @@
 const Job = require('../models/job')
+const Profile = require('../models/profile')
 const User = require('../models/user')
 const CatchAsync = require('../utils/catch-async')
 const { getAll, getOne, deleteOne } = require('./generic')
@@ -7,7 +8,9 @@ const { getAll, getOne, deleteOne } = require('./generic')
 exports.createJob = CatchAsync( async (req, res, next) => {
     const payload = req.body
 
-    const job = await Job.create({...payload})
+    const employerId = req.user.id
+
+    const job = await Job.create({...payload, employerId})
 
     res.status(201).json({
         status: 'success',
@@ -40,21 +43,27 @@ exports.updateOneJob = CatchAsync(async (req, res, next) => {
 exports.getJobRecommendations = CatchAsync(async (req, res, next) => {
     const userId = req.user.id
 
-    const user = await User.findById({_id: userId})
+    const userProfile = await Profile.findOne({ userId: userId });
+    if (!userProfile) {
+        return next(new ErrorObject("Please create a profile", 400));
+      }
 
-    const jobRecommendations = await Job.find({category: user.skill, yearsOfExperience: user.yearsOfExperience})
+    const jobRecommendations = await Job.find({
+            category: userProfile.skills,
+            yearsOfExperience: userProfile.yearsOfExperience,
+          })
 
-    if(jobRecommendations){
-        return res.status(201).json({
-            status: 'success',
-            message: 'These are recommended jobs',
-            results: jobRecommendations.length,
-            data: {jobRecommendations}
-        })
+    if(!jobRecommendations){
+        return next(
+            new ErrorObject("There are no Job(s) that suits your profile", 400)
+          )
     }
 
     res.status(201).json({
-        message: 'Please update your profile to find jobs that match'
+        status: 'success',
+        message: 'These are recommended jobs',
+        results: jobRecommendations.length,
+        data: {jobRecommendations}
     })
 })
 

@@ -19,7 +19,20 @@ const userJobSchema = new mongoose.Schema({
         type: Date,
         default: Date.now(),
     },
-})
+}, 
+{
+    timestamps: true,
+    toObject: {virtuals: true,},
+    toJSON: {virtuals: true,},
+  })
+
+
+userJobSchema.pre(/^findOne/, function (next) {
+    this.populate({
+      path: "userId",
+    });
+    next();
+  });
 
 const JobApplication = mongoose.model('UserJob', userJobSchema);
 

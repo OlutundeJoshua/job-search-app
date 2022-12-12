@@ -10,31 +10,26 @@ exports.createJobApplication = CatchAsync(async (req, res, next) => {
     const job = await Job.findOne({jobId})
 
     if(!job) {
-        return res.status(404).json({
-            status: 'fail',
-            message: 'There is no job with Id ${jobId'
-        })
+        return next(new ErrorObject(`There is no job with the ID ${jobId}`, 400))
     }
 
-    const jobApplication = await JobApplication.findOne({userId, jobId})
+    const userApplication = await JobApplication.findOne({userId, jobId})
 
-    if(!jobApplication) {
-        const jobApplication = await JobApplication.create({
-            userId,
-            employerId: job.employerId,
-            jobId,
-            status
-        })
-
-        return res.status(201).json({
-            status: 'success',
-            message: 'You have successfully applied for the job',
-            data: {jobApplication}
-        })
+    if(userApplication) {
+        return next(new ErrorObject("You have already applied for the Job", 400));
     }
+    
+    const jobApplication = await JobApplication.create({
+        userId,
+        employerId: job.employerId,
+        jobId,
+        status
+    })
 
-    res.status(201).json({
-        message: 'You have already applied for the job'
+    return res.status(201).json({
+        status: 'success',
+        message: 'You have successfully applied for the job',
+        data: {jobApplication}
     })
 })
 

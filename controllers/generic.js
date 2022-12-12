@@ -1,4 +1,5 @@
 const CatchAsync = require("../utils/catch-async");
+const ErrorObject = require("../utils/error");
 const QueryMethod = require("../utils/query");
 
 //Get One

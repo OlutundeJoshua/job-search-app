@@ -40,7 +40,7 @@ const jobSchema = new mongoose.Schema({
     workType: {
         type: String,
         required: [true, 'Please enter the work type'],
-        enum: ['Full Time', 'Part Time', 'Contract'],
+        enum: ['remote', 'hybrid', 'physical'],
     },
     salary: {
         type: String,
@@ -55,7 +55,6 @@ const jobSchema = new mongoose.Schema({
         required: [true, "please enter year of experience needed"],
         enum: [
           "No experience",
-          "0 to 1 year",
           "1 year",
           "2 years",
           "3 years",
