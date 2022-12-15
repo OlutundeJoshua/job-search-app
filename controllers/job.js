@@ -30,8 +30,9 @@ exports.deleteOneJob = deleteOne(Job)
 //Update A Job
 exports.updateOneJob = CatchAsync(async (req, res, next) => {
     const payload = req.body
+    const jobId = req.params.id
     
-    const update = await Job.findByIdAndUpdate({...payload})
+    const update = await Job.findByIdAndUpdate(jobId, {...payload})
 
     res.status(201).json({
         status: 'success',

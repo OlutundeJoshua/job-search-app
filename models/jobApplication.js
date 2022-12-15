@@ -13,7 +13,8 @@ const userJobSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ['applied', 'shortlisted', 'accepted','rejected']
+        enum: ['applied', 'shortlisted', 'accepted','rejected'],
+        default: 'applied'
     },
     createdAt: {
         type: Date,
